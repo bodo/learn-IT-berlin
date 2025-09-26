@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\Event;
 use Livewire\Component;
 
 class Dashboard extends Component
@@ -10,8 +11,13 @@ class Dashboard extends Component
     {
         $user = auth()->user();
 
-        // Placeholder collections until event/comment features are implemented.
-        $upcomingEvents = collect();
+        $upcomingEvents = Event::query()
+            ->published()
+            ->orderBy('event_datetime')
+            ->with('group')
+            ->take(6)
+            ->get();
+
         $rsvpEvents = collect();
         $recentActivity = collect();
 

@@ -31,6 +31,15 @@
                         <button class="btn btn-primary" wire:click="toggleMembership">
                             {{ $isMember ? __('Leave group') : __('Join group') }}
                         </button>
+
+                        @if ($group->canManage(auth()->user()))
+                            <a href="{{ route('admin.events.index', $group) }}" class="btn btn-outline">
+                                {{ __('Manage events') }}
+                            </a>
+                            <a href="{{ route('admin.groups.manage', $group) }}" class="btn btn-outline">
+                                {{ __('Manage group') }}
+                            </a>
+                        @endif
                     @else
                         <a href="{{ route('login') }}" class="btn btn-primary">
                             {{ __('Sign in to join') }}
@@ -76,4 +85,6 @@
             </div>
         </div>
     </div>
+
+    <livewire:events.list-by-group :group="$group" />
 </div>

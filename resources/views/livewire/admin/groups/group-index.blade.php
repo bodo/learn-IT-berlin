@@ -61,6 +61,12 @@
                                 <td class="text-right">
                                     <div class="join join-horizontal justify-end">
                                         <a
+                                            href="{{ route('admin.events.index', $group) }}"
+                                            class="btn btn-sm btn-outline join-item"
+                                        >
+                                            {{ __('Events') }}
+                                        </a>
+                                        <a
                                             href="{{ route('admin.groups.manage', $group) }}"
                                             class="btn btn-sm btn-outline join-item"
                                         >

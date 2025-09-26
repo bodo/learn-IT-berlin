@@ -1,12 +1,23 @@
 <div class="space-y-6">
-    <div class="flex items-center gap-4">
-        <a href="{{ route('admin.groups.index') }}" class="btn btn-ghost btn-sm">
-            <x-lucide-arrow-left class="w-4 h-4" />
-            {{ __('Back to groups') }}
-        </a>
-        <div>
-            <h1 class="text-3xl font-bold">{{ $group->title }}</h1>
-            <p class="text-base-content/70">{{ __('Manage group details and membership.') }}</p>
+    <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+        <div class="flex items-center gap-4">
+            <a href="{{ route('admin.groups.index') }}" class="btn btn-ghost btn-sm">
+                <x-lucide-arrow-left class="w-4 h-4" />
+                {{ __('Back to groups') }}
+            </a>
+            <div>
+                <h1 class="text-3xl font-bold">{{ $group->title }}</h1>
+                <p class="text-base-content/70">{{ __('Manage group details and membership.') }}</p>
+            </div>
+        </div>
+
+        <div class="flex gap-2 md:self-start">
+            <a href="{{ route('admin.events.index', $group) }}" class="btn btn-primary">
+                {{ __('Manage events') }}
+            </a>
+            <a href="{{ route('admin.events.create', $group) }}" class="btn btn-outline">
+                {{ __('Create event') }}
+            </a>
         </div>
     </div>
 

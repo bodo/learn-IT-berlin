@@ -4,6 +4,10 @@
         <div class="mb-8">
             <h1 class="text-3xl font-bold">{{ __('Welcome back, :name!', ['name' => $user->name]) }}</h1>
             <p class="text-base-content/70 mt-2">{{ __('Here are your upcoming events and important information.') }}</p>
+            <div class="mt-3 inline-flex items-center gap-2 rounded-full bg-base-200 px-4 py-1 text-sm text-base-content/80">
+                <x-lucide-shield class="h-4 w-4" />
+                <span>{{ __('Role: :role', ['role' => $user->roleLabel()]) }}</span>
+            </div>
         </div>
     @else
         <div class="mb-8">
@@ -82,11 +86,29 @@
         @if($upcomingEvents->count() > 0)
             <div class="space-y-4">
                 @foreach($upcomingEvents as $event)
-                    {{-- Event cards will go here when events system is implemented --}}
-                    <div class="p-4 border border-zinc-200 dark:border-zinc-700 rounded-lg">
-                        <h3 class="font-semibold">{{ $event->title }}</h3>
-                        <p class="text-sm text-zinc-600 dark:text-zinc-400">{{ $event->date }}</p>
-                    </div>
+                    <a href="{{ route('events.show', $event) }}" class="block rounded-lg border border-base-200 bg-base-100 p-4 transition-colors hover:border-primary/80">
+                        <div class="flex flex-col gap-2">
+                            <div class="flex items-start justify-between gap-3">
+                                <div>
+                                    <h3 class="font-semibold text-base-content">{{ $event->title }}</h3>
+                                    <p class="text-sm text-base-content/70">{{ $event->group->title }}</p>
+                                </div>
+                                <span class="badge badge-outline">{{ $event->status->label() }}</span>
+                            </div>
+                            <div class="text-sm text-base-content/70 flex flex-wrap gap-4">
+                                <span>
+                                    {{ optional($event->local_event_date)->format('M j, Y g:i A') ?? $event->event_datetime?->format('M j, Y g:i A') }}
+                                    @if ($event->timezone)
+                                        ({{ $event->timezone }})
+                                    @endif
+                                </span>
+                                <span class="flex items-center gap-2">
+                                    <x-lucide-map-pin class="h-4 w-4" />
+                                    <span>{{ $event->place }}</span>
+                                </span>
+                            </div>
+                        </div>
+                    </a>
                 @endforeach
             </div>
         @else

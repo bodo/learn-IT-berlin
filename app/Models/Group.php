@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Storage;
 
 class Group extends Model
@@ -37,6 +38,11 @@ class Group extends Model
     public function members(): BelongsToMany
     {
         return $this->users()->wherePivot('role', GroupRole::Member->value);
+    }
+
+    public function events(): HasMany
+    {
+        return $this->hasMany(Event::class);
     }
 
     public function allUsers(): BelongsToMany
@@ -71,8 +77,12 @@ class Group extends Model
         return $this->allUsers()->whereKey($user->getKey())->exists();
     }
 
-    public function canManage(User $user): bool
+    public function canManage(?User $user): bool
     {
+        if (! $user) {
+            return false;
+        }
+
         return $this->isOwner($user) || $user->isAdmin();
     }
 

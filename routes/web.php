@@ -41,9 +41,19 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 Route::middleware(['auth'])->group(function () {
     Route::get('admin/groups/{group}', \App\Livewire\Admin\Groups\GroupManage::class)
         ->name('admin.groups.manage');
+
+    Route::get('admin/groups/{group}/events', \App\Livewire\Admin\Events\EventIndex::class)
+        ->name('admin.events.index');
+    Route::get('admin/groups/{group}/events/create', \App\Livewire\Admin\Events\EventForm::class)
+        ->defaults('event', null)
+        ->name('admin.events.create');
+    Route::get('admin/groups/{group}/events/{event}/edit', \App\Livewire\Admin\Events\EventForm::class)
+        ->name('admin.events.edit');
 });
 
 Route::get('groups', \App\Livewire\Groups\Directory::class)->name('groups.index');
 Route::get('groups/{group}', \App\Livewire\Groups\Show::class)->name('groups.show');
+Route::get('groups/{group}/events', \App\Livewire\Events\ListByGroup::class)->name('groups.events.index');
+Route::get('events/{event}', \App\Livewire\Events\Show::class)->name('events.show');
 
 require __DIR__.'/auth.php';

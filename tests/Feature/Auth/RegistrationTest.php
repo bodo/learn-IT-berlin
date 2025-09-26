@@ -1,5 +1,7 @@
 <?php
 
+use App\Enums\UserRole;
+use App\Models\User;
 use Livewire\Volt\Volt;
 
 uses(\Illuminate\Foundation\Testing\RefreshDatabase::class);
@@ -13,6 +15,8 @@ test('registration screen can be rendered', function () {
 test('new users can register', function () {
     $response = Volt::test('auth.register')
         ->set('name', 'Test User')
+        ->set('display_name', 'Tester')
+        ->set('bio', 'Excited to learn new things!')
         ->set('email', 'test@example.com')
         ->set('password', 'password')
         ->set('password_confirmation', 'password')
@@ -23,4 +27,10 @@ test('new users can register', function () {
         ->assertRedirect(route('dashboard', absolute: false));
 
     $this->assertAuthenticated();
+
+    $user = User::whereEmail('test@example.com')->firstOrFail();
+
+    expect($user->role)->toBe(UserRole::User)
+        ->and($user->display_name)->toBe('Tester')
+        ->and($user->bio)->toBe('Excited to learn new things!');
 });

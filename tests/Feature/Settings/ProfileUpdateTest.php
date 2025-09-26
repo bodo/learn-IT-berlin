@@ -1,6 +1,8 @@
 <?php
 
 use App\Models\User;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Volt\Volt;
 
 uses(\Illuminate\Foundation\Testing\RefreshDatabase::class);
@@ -18,6 +20,8 @@ test('profile information can be updated', function () {
 
     $response = Volt::test('settings.profile')
         ->set('name', 'Test User')
+        ->set('display_name', 'Tester')
+        ->set('bio', 'I love algorithms.')
         ->set('email', 'test@example.com')
         ->call('updateProfileInformation');
 
@@ -27,6 +31,8 @@ test('profile information can be updated', function () {
 
     expect($user->name)->toEqual('Test User');
     expect($user->email)->toEqual('test@example.com');
+    expect($user->display_name)->toEqual('Tester');
+    expect($user->bio)->toEqual('I love algorithms.');
     expect($user->email_verified_at)->toBeNull();
 });
 
@@ -37,12 +43,37 @@ test('email verification status is unchanged when email address is unchanged', f
 
     $response = Volt::test('settings.profile')
         ->set('name', 'Test User')
+        ->set('display_name', 'Test User')
+        ->set('bio', null)
         ->set('email', $user->email)
         ->call('updateProfileInformation');
 
     $response->assertHasNoErrors();
 
     expect($user->refresh()->email_verified_at)->not->toBeNull();
+});
+
+test('user can upload an avatar', function () {
+    Storage::fake('public');
+
+    $user = User::factory()->create();
+
+    $this->actingAs($user);
+
+    $response = Volt::test('settings.profile')
+        ->set('name', 'Avatar User')
+        ->set('display_name', 'Avatar User')
+        ->set('bio', null)
+        ->set('email', $user->email)
+        ->set('avatar', UploadedFile::fake()->image('avatar.png'))
+        ->call('updateProfileInformation');
+
+    $response->assertHasNoErrors();
+
+    $user->refresh();
+
+    expect($user->avatar_path)->not->toBeNull();
+    Storage::disk('public')->assertExists($user->avatar_path);
 });
 
 test('user can delete their account', function () {

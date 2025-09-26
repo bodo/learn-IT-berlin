@@ -118,6 +118,68 @@
         </div>
     </div>
 
+    @auth
+        {{-- RSVPs Section --}}
+        <div class="card bg-base-100 shadow-xl">
+            <div class="card-body">
+                <h2 class="card-title">{{ __('Your RSVPs') }}</h2>
+                <p class="text-base-content/70">{{ __('Keep track of the events you plan to attend.') }}</p>
+
+                @if ($rsvpEvents->count() > 0)
+                    <div class="space-y-4">
+                        @foreach ($rsvpEvents as $event)
+                            <div class="p-4 border border-base-200 rounded-lg">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <h3 class="font-semibold">{{ $event->title }}</h3>
+                                        <p class="text-sm text-base-content/70">{{ $event->date }}</p>
+                                    </div>
+                                    <span class="badge badge-outline">{{ $event->status ?? __('Going') }}</span>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                @else
+                    <div class="text-center py-10 text-sm text-base-content/70">
+                        {{ __('RSVP to an event and it will appear here.') }}
+                    </div>
+                @endif
+            </div>
+        </div>
+
+        {{-- Recent Activity --}}
+        <div class="card bg-base-100 shadow-xl">
+            <div class="card-body">
+                <h2 class="card-title">{{ __('Recent Activity') }}</h2>
+                <p class="text-base-content/70">{{ __('Comments, RSVPs, and other actions appear here.') }}</p>
+
+                @if ($recentActivity->count() > 0)
+                    <ul class="timeline timeline-vertical timeline-compact">
+                        @foreach ($recentActivity as $activity)
+                            <li>
+                                <div class="timeline-middle">
+                                    <span class="badge badge-primary"></span>
+                                </div>
+                                <div class="timeline-end timeline-box">
+                                    <p class="font-semibold">{{ data_get($activity, 'title', __('Activity')) }}</p>
+                                    <p class="text-sm text-base-content/70">{{ data_get($activity, 'description', __('Details coming soon.')) }}</p>
+                                    @php($timestamp = data_get($activity, 'timestamp'))
+                                    <span class="text-xs text-base-content/60">
+                                        {{ $timestamp ? $timestamp->diffForHumans() : __('Just now') }}
+                                    </span>
+                                </div>
+                            </li>
+                        @endforeach
+                    </ul>
+                @else
+                    <div class="text-center py-10 text-sm text-base-content/70">
+                        {{ __('Once you start participating, your activity log will show up here.') }}
+                    </div>
+                @endif
+            </div>
+        </div>
+    @endauth
+
     {{-- Call to Action for Non-Authenticated Users --}}
     @guest
         <div class="card bg-base-100 shadow-xl">

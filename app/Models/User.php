@@ -3,8 +3,10 @@
 namespace App\Models;
 
 use App\Enums\UserRole;
+use App\Models\UserSession;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
@@ -22,9 +24,12 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'display_name',
+        'bio',
         'email',
         'password',
         'role',
+        'avatar_path',
     ];
 
     /**
@@ -51,6 +56,11 @@ class User extends Authenticatable
         ];
     }
 
+    public function userSessions(): HasMany
+    {
+        return $this->hasMany(UserSession::class);
+    }
+
     /**
      * Accessor for the user's initials.
      */
@@ -69,6 +79,19 @@ class User extends Authenticatable
     public function roleLabel(): string
     {
         return $this->role?->label() ?? UserRole::User->label();
+    }
+
+    public function avatarUrl(): ?string
+    {
+        if ($this->avatar_path) {
+            return asset('storage/'.$this->avatar_path);
+        }
+
+        if ($this->email) {
+            return 'https://www.gravatar.com/avatar/'.md5(strtolower(trim($this->email))).'?s=128&d=mp';
+        }
+
+        return null;
     }
 
     public function isUser(): bool

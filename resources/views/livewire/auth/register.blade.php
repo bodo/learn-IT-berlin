@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\UserRole;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
@@ -10,6 +11,8 @@ use Livewire\Volt\Component;
 
 new #[Layout('components.layouts.auth')] class extends Component {
     public string $name = '';
+    public ?string $display_name = null;
+    public ?string $bio = null;
     public string $email = '';
     public string $password = '';
     public string $password_confirmation = '';
@@ -21,11 +24,15 @@ new #[Layout('components.layouts.auth')] class extends Component {
     {
         $validated = $this->validate([
             'name' => ['required', 'string', 'max:255'],
+            'display_name' => ['nullable', 'string', 'max:255'],
+            'bio' => ['nullable', 'string', 'max:1000'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
             'password' => ['required', 'string', 'confirmed', Rules\Password::defaults()],
         ]);
 
         $validated['password'] = Hash::make($validated['password']);
+        $validated['display_name'] = $validated['display_name'] ?: $validated['name'];
+        $validated['role'] = UserRole::User;
 
         event(new Registered(($user = User::create($validated))));
 
@@ -62,6 +69,24 @@ new #[Layout('components.layouts.auth')] class extends Component {
             @enderror
         </div>
 
+        <!-- Display Name -->
+        <div class="form-control">
+            <label class="label" for="display_name">
+                <span class="label-text">{{ __('Display name (optional)') }}</span>
+            </label>
+            <input
+                id="display_name"
+                wire:model="display_name"
+                type="text"
+                autocomplete="nickname"
+                placeholder="{{ __('How should we address you?') }}"
+                class="input input-bordered w-full"
+            />
+            @error('display_name')
+                <span class="mt-2 text-sm text-error">{{ $message }}</span>
+            @enderror
+        </div>
+
         <!-- Email Address -->
         <div class="form-control">
             <label class="label" for="email">
@@ -77,6 +102,23 @@ new #[Layout('components.layouts.auth')] class extends Component {
                 class="input input-bordered w-full"
             />
             @error('email')
+                <span class="mt-2 text-sm text-error">{{ $message }}</span>
+            @enderror
+        </div>
+
+        <!-- Bio -->
+        <div class="form-control">
+            <label class="label" for="bio">
+                <span class="label-text">{{ __('Short bio (optional)') }}</span>
+            </label>
+            <textarea
+                id="bio"
+                wire:model="bio"
+                class="textarea textarea-bordered"
+                rows="3"
+                placeholder="{{ __('Tell others what you are interested in learning.') }}"
+            ></textarea>
+            @error('bio')
                 <span class="mt-2 text-sm text-error">{{ $message }}</span>
             @enderror
         </div>

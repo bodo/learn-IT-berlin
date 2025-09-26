@@ -86,11 +86,12 @@ Implement a comments system for events with role-based moderation and approval w
 # General Instructions
 
 - Do not hallucinate features that are not specified
+- If there are well-established libraries doing the feature that we want, use them!
 - Use i18n, as recommend with Laravel. Provide english and German JSON. Just the UI is i18n, event data fields are just any language (up to the creator), no fancy features for that.
-- Utilize tailwind+daisy. ACtuALLy! use daisy UI components. Avoid custom CSS unless utterly necessary
+- Utilize tailwind+Daisy. ACtuALLy! use Daisy UI components. Avoid custom CSS unless utterly necessary
 - Keep the design lean. Avoid wrapping everything in five containers and cards and divs.
 - Follow best practices. Use design patterns. Keep the code extensible and readable
 - Think about a good folder and file structure. Adhere to DRY and single responsibility principle. Keep functions and files *short*
-- Auto-detect light/darkmode and utilize via daisy/tailwind. Avoid using colors that break on dark mode.
+- Auto-detect light/darkmode and utilize via Daisy/tailwind. Avoid using colors that break on dark mode.
 - Keep an `ARCHITECTURE.md`, a living document for other dev on how the app is structured on high level. Do not waffle, no sycophancy, no marketing.
 - Add unit tests for basic happy path.

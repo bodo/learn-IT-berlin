@@ -42,33 +42,62 @@ new class extends Component {
 
     <x-settings.layout :heading="__('Update password')" :subheading="__('Ensure your account is using a long, random password to stay secure')">
         <form method="POST" wire:submit="updatePassword" class="mt-6 space-y-6">
-            <flux:input
-                wire:model="current_password"
-                :label="__('Current password')"
-                type="password"
-                required
-                autocomplete="current-password"
-            />
-            <flux:input
-                wire:model="password"
-                :label="__('New password')"
-                type="password"
-                required
-                autocomplete="new-password"
-            />
-            <flux:input
-                wire:model="password_confirmation"
-                :label="__('Confirm Password')"
-                type="password"
-                required
-                autocomplete="new-password"
-            />
+            <div class="form-control">
+                <label class="label" for="current_password">
+                    <span class="label-text">{{ __('Current password') }}</span>
+                </label>
+                <input
+                    id="current_password"
+                    wire:model="current_password"
+                    type="password"
+                    required
+                    autocomplete="current-password"
+                    class="input input-bordered w-full"
+                />
+                @error('current_password')
+                    <span class="mt-2 text-sm text-error">{{ $message }}</span>
+                @enderror
+            </div>
+
+            <div class="form-control">
+                <label class="label" for="new_password">
+                    <span class="label-text">{{ __('New password') }}</span>
+                </label>
+                <input
+                    id="new_password"
+                    wire:model="password"
+                    type="password"
+                    required
+                    autocomplete="new-password"
+                    class="input input-bordered w-full"
+                />
+                @error('password')
+                    <span class="mt-2 text-sm text-error">{{ $message }}</span>
+                @enderror
+            </div>
+
+            <div class="form-control">
+                <label class="label" for="password_confirmation">
+                    <span class="label-text">{{ __('Confirm Password') }}</span>
+                </label>
+                <input
+                    id="password_confirmation"
+                    wire:model="password_confirmation"
+                    type="password"
+                    required
+                    autocomplete="new-password"
+                    class="input input-bordered w-full"
+                />
+                @error('password_confirmation')
+                    <span class="mt-2 text-sm text-error">{{ $message }}</span>
+                @enderror
+            </div>
 
             <div class="flex items-center gap-4">
                 <div class="flex items-center justify-end">
-                    <flux:button variant="primary" type="submit" class="w-full" data-test="update-password-button">
+                    <button type="submit" class="btn btn-primary" data-test="update-password-button">
                         {{ __('Save') }}
-                    </flux:button>
+                    </button>
                 </div>
 
                 <x-action-message class="me-3" on="password-updated">

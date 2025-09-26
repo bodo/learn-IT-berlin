@@ -10,10 +10,62 @@ new class extends Component {
     @include('partials.settings-heading')
 
     <x-settings.layout :heading="__('Appearance')" :subheading=" __('Update the appearance settings for your account')">
-        <flux:radio.group x-data variant="segmented" x-model="$flux.appearance">
-            <flux:radio value="light" icon="sun">{{ __('Light') }}</flux:radio>
-            <flux:radio value="dark" icon="moon">{{ __('Dark') }}</flux:radio>
-            <flux:radio value="system" icon="computer-desktop">{{ __('System') }}</flux:radio>
-        </flux:radio.group>
+        <div
+            x-data="appearanceSettings()"
+            class="space-y-4"
+        >
+            <div class="join">
+                <button type="button" class="join-item btn" :class="buttonClasses('light')" @click="setTheme('light')">
+                    <x-lucide-sun class="w-4 h-4" />
+                    <span>{{ __('Light') }}</span>
+                </button>
+                <button type="button" class="join-item btn" :class="buttonClasses('dark')" @click="setTheme('dark')">
+                    <x-lucide-moon class="w-4 h-4" />
+                    <span>{{ __('Dark') }}</span>
+                </button>
+                <button type="button" class="join-item btn" :class="buttonClasses('system')" @click="setTheme('system')">
+                    <x-lucide-monitor class="w-4 h-4" />
+                    <span>{{ __('System') }}</span>
+                </button>
+            </div>
+
+            <p class="text-sm text-base-content/70">
+                {{ __('Your preference is saved on this device and applied automatically on future visits.') }}
+            </p>
+        </div>
     </x-settings.layout>
 </section>
+
+@push('scripts')
+    <script>
+        function appearanceSettings() {
+            const stored = localStorage.getItem('learnit-theme');
+            const initial = stored ?? 'system';
+
+            const applyTheme = (value) => {
+                if (value === 'system') {
+                    localStorage.removeItem('learnit-theme');
+                    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                    document.documentElement.dataset.theme = prefersDark ? 'dark' : 'light';
+                    document.documentElement.classList.toggle('dark', prefersDark);
+                    return;
+                }
+
+                localStorage.setItem('learnit-theme', value);
+                document.documentElement.dataset.theme = value;
+                document.documentElement.classList.toggle('dark', value === 'dark');
+            };
+
+            return {
+                theme: initial,
+                buttonClasses(value) {
+                    return this.theme === value ? 'btn-primary text-primary-content' : 'btn-ghost';
+                },
+                setTheme(value) {
+                    this.theme = value;
+                    applyTheme(value);
+                },
+            };
+        }
+    </script>
+@endpush

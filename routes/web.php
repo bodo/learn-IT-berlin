@@ -28,10 +28,22 @@ Route::middleware(['auth'])->group(function () {
         )
         ->name('two-factor.show');
 
-    // Admin routes
     Route::get('admin/users', \App\Livewire\Admin\UserRoleManager::class)
         ->middleware('role:superuser')
         ->name('admin.users');
 });
+
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('admin/groups', \App\Livewire\Admin\Groups\GroupIndex::class)
+        ->name('admin.groups.index');
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('admin/groups/{group}', \App\Livewire\Admin\Groups\GroupManage::class)
+        ->name('admin.groups.manage');
+});
+
+Route::get('groups', \App\Livewire\Groups\Directory::class)->name('groups.index');
+Route::get('groups/{group}', \App\Livewire\Groups\Show::class)->name('groups.show');
 
 require __DIR__.'/auth.php';

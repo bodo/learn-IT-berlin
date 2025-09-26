@@ -21,14 +21,14 @@
                         <li><a href="{{ route('dashboard') }}" wire:navigate>{{ __('Dashboard') }}</a></li>
                     @endauth
                     <li><a href="/events" wire:navigate>{{ __('Events') }}</a></li>
-                    <li><a href="/groups" wire:navigate>{{ __('Groups') }}</a></li>
+                    <li><a href="{{ route('groups.index') }}" wire:navigate>{{ __('Groups') }}</a></li>
                     @auth
                         @if(auth()->user()->isAdmin())
                             <li>
                                 <details>
                                     <summary>{{ __('Admin') }}</summary>
                                     <ul class="p-2 bg-base-100 w-52">
-                                        <li><a href="/admin/groups" wire:navigate>
+                                        <li><a href="{{ route('admin.groups.index') }}" wire:navigate>
                                             <x-lucide-building class="w-4 h-4" />
                                             {{ __('Manage Groups') }}
                                         </a></li>
@@ -96,10 +96,10 @@
                             <li><a href="{{ route('dashboard') }}" wire:navigate>{{ __('Dashboard') }}</a></li>
                         @endauth
                         <li><a href="/events" wire:navigate>{{ __('Events') }}</a></li>
-                        <li><a href="/groups" wire:navigate>{{ __('Groups') }}</a></li>
+                        <li><a href="{{ route('groups.index') }}" wire:navigate>{{ __('Groups') }}</a></li>
                         @auth
                             @if(auth()->user()->isAdmin())
-                                <li><a href="/admin/groups" wire:navigate>{{ __('Manage Groups') }}</a></li>
+                                <li><a href="{{ route('admin.groups.index') }}" wire:navigate>{{ __('Manage Groups') }}</a></li>
                                 @if(auth()->user()->isSuperuser())
                                     <li><a href="/admin/users" wire:navigate>{{ __('Manage Users') }}</a></li>
                                 @endif

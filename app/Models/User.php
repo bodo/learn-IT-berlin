@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use App\Enums\GroupRole;
 use App\Enums\UserRole;
+use App\Models\Group;
 use App\Models\UserSession;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -59,6 +62,37 @@ class User extends Authenticatable
     public function userSessions(): HasMany
     {
         return $this->hasMany(UserSession::class);
+    }
+
+    public function groups(): BelongsToMany
+    {
+        return $this->belongsToMany(Group::class)
+            ->withPivot(['role', 'joined_at'])
+            ->withTimestamps();
+    }
+
+    public function ownedGroups(): BelongsToMany
+    {
+        return $this->groups()->wherePivot('role', GroupRole::Owner->value);
+    }
+
+    public function moderatedGroups(): BelongsToMany
+    {
+        return $this->groups()->wherePivot('role', GroupRole::Moderator->value);
+    }
+
+    public function memberGroups(): BelongsToMany
+    {
+        return $this->groups()->wherePivot('role', GroupRole::Member->value);
+    }
+
+    public function groupRole(Group $group): ?GroupRole
+    {
+        $role = $this->groups()
+            ->where('group_id', $group->id)
+            ->value('group_user.role');
+
+        return $role ? GroupRole::from($role) : null;
     }
 
     /**

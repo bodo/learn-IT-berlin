@@ -123,7 +123,7 @@
         <footer class="border-t border-base-200 bg-base-100">
             <div class="container mx-auto px-4 py-6">
                 <div class="text-center text-sm text-base-content/70">
-                    <p>&copy; {{ date('Y') }} Learn-it Berlin. {{ __('Bringing together the Berlin tech community.') }}</p>
+                    <p>&copy; {{ date('Y') }} Learn IT Berlin. {{ __('Bringing together the Berlin tech community.') }}</p>
                 </div>
             </div>
         </footer>

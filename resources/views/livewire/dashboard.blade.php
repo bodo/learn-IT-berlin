@@ -11,7 +11,7 @@
         </div>
     @else
         <div class="mb-8">
-            <h1 class="text-3xl font-bold">{{ __('Welcome to Learn-it Berlin') }}</h1>
+            <h1 class="text-3xl font-bold">{{ __('Welcome to Learn IT Berlin') }}</h1>
             <p class="text-base-content/70 mt-2">{{ __('Discover upcoming computer science learning events in Berlin.') }}</p>
         </div>
     @endauth
@@ -95,6 +95,9 @@
                                 </div>
                                 <span class="badge badge-outline">{{ $event->status->label() }}</span>
                             </div>
+                            @if ($event->description)
+                                <p class="text-sm text-base-content/70 line-clamp-3">{{ $event->description }}</p>
+                            @endif
                             <div class="text-sm text-base-content/70 flex flex-wrap gap-4">
                                 <span>
                                     {{ optional($event->local_event_date)->format('M j, Y g:i A') ?? $event->event_datetime?->format('M j, Y g:i A') }}
@@ -206,7 +209,7 @@
     @guest
         <div class="card bg-base-100 shadow-xl">
             <div class="card-body text-center">
-                <h2 class="card-title justify-center">{{ __('Join Learn-it Berlin') }}</h2>
+                <h2 class="card-title justify-center">{{ __('Join Learn IT Berlin') }}</h2>
                 <p class="text-base-content/70">
                     {{ __('Sign up to RSVP for events, join groups, and connect with the Berlin tech community.') }}
                 </p>

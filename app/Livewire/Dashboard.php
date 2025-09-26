@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Event;
+use Illuminate\Support\Facades\Schema;
 use Livewire\Component;
 
 class Dashboard extends Component
@@ -11,12 +12,14 @@ class Dashboard extends Component
     {
         $user = auth()->user();
 
-        $upcomingEvents = Event::query()
-            ->published()
-            ->orderBy('event_datetime')
-            ->with('group')
-            ->take(6)
-            ->get();
+        $upcomingEvents = Schema::hasTable('events')
+            ? Event::query()
+                ->published()
+                ->orderBy('event_datetime')
+                ->with('group')
+                ->take(6)
+                ->get()
+            : collect();
 
         $rsvpEvents = collect();
         $recentActivity = collect();

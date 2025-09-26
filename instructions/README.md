@@ -1,6 +1,6 @@
-# Learn-it Berlin - Implementation Plan
+# Learn IT Berlin - Implementation Plan
 
-This directory contains the implementation instructions for building the Learn-it Berlin meetup application, broken down into manageable, testable parts.
+This directory contains the implementation instructions for building the Learn IT Berlin meetup application, broken down into manageable, testable parts.
 
 ## Project Overview
 

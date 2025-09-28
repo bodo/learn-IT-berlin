@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Date;
+use Illuminate\Support\Facades\DB;
 
 class Event extends Model
 {
@@ -61,6 +62,16 @@ class Event extends Model
         return $this->hasMany(EventImage::class)->orderBy('order_column');
     }
 
+    public function rsvps(): HasMany
+    {
+        return $this->hasMany(EventRsvp::class);
+    }
+
+    public function confirmedAttendees(): HasMany
+    {
+        return $this->rsvps()->where('status', \App\Enums\RsvpStatus::Going->value)->whereNull('waitlist_position');
+    }
+
     public function scopePublished(Builder $query): Builder
     {
         return $query->where('status', EventStatus::Published);
@@ -110,5 +121,55 @@ class Event extends Model
         }
 
         return $this->reserved_spots - $this->max_spots + 1;
+    }
+
+    /**
+     * Recalculate waitlist positions and reserved spots based on current RSVPs.
+     */
+    public function recalcRsvps(): void
+    {
+        DB::transaction(function () {
+            $going = $this->rsvps()
+                ->where('status', \App\Enums\RsvpStatus::Going->value)
+                ->orderBy('created_at')
+                ->orderBy('id')
+                ->lockForUpdate()
+                ->get();
+
+            if ($this->max_spots === null) {
+                // Unlimited spots: everyone confirmed
+                foreach ($going as $r) {
+                    if ($r->waitlist_position !== null) {
+                        $r->waitlist_position = null;
+                        $r->save();
+                    }
+                }
+                $this->reserved_spots = $going->count();
+                $this->save();
+                return;
+            }
+
+            $capacity = (int) $this->max_spots;
+            $confirmed = 0;
+            $waitPos = 1;
+            foreach ($going as $index => $r) {
+                if ($index < $capacity) {
+                    if ($r->waitlist_position !== null) {
+                        $r->waitlist_position = null;
+                        $r->save();
+                    }
+                    $confirmed++;
+                } else {
+                    if ($r->waitlist_position !== $waitPos) {
+                        $r->waitlist_position = $waitPos;
+                        $r->save();
+                    }
+                    $waitPos++;
+                }
+            }
+
+            $this->reserved_spots = $confirmed;
+            $this->save();
+        });
     }
 }

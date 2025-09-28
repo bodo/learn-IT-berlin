@@ -49,6 +49,8 @@ Route::middleware(['auth'])->group(function () {
         ->name('admin.events.create');
     Route::get('admin/groups/{group}/events/{event}/edit', \App\Livewire\Admin\Events\EventForm::class)
         ->name('admin.events.edit');
+    Route::get('admin/groups/{group}/events/{event}/attendees.csv', \App\Http\Controllers\EventAttendeesExportController::class)
+        ->name('admin.events.attendees.export');
 });
 
 Route::get('groups', \App\Livewire\Groups\Directory::class)->name('groups.index');

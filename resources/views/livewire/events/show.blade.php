@@ -30,8 +30,9 @@
                             <a href="{{ route('groups.show', $event->group) }}" class="link link-primary">{{ $event->group->title }}</a>
                         </div>
                         @if ($canManage)
-                            <div class="pt-2">
+                            <div class="pt-2 space-y-2">
                                 <a href="{{ route('admin.events.edit', [$event->group, $event]) }}" class="btn btn-sm btn-outline w-full">{{ __('Edit event') }}</a>
+                                <a href="{{ route('admin.events.attendees.export', [$event->group, $event]) }}" class="btn btn-sm btn-outline w-full">{{ __('Export attendees (CSV)') }}</a>
                             </div>
                         @endif
                     </div>
@@ -51,4 +52,6 @@
             </div>
         </div>
     </div>
+
+    <livewire:events.rsvp-panel :event="$event" />
 </div>

@@ -64,6 +64,11 @@ class User extends Authenticatable
         return $this->hasMany(UserSession::class);
     }
 
+    public function rsvps(): HasMany
+    {
+        return $this->hasMany(\App\Models\EventRsvp::class);
+    }
+
     public function groups(): BelongsToMany
     {
         return $this->belongsToMany(Group::class)

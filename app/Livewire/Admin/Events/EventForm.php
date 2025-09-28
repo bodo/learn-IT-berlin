@@ -160,6 +160,11 @@ class EventForm extends Component
             }
         }
 
+        // Recalculate RSVPs if capacity changed
+        if (\Illuminate\Support\Facades\Schema::hasTable('event_rsvps')) {
+            $event->recalcRsvps();
+        }
+
         session()->flash('success', __('Event saved.'));
         $this->redirectRoute('admin.events.index', $this->group);
     }

@@ -76,6 +76,15 @@ class EventForm extends Component
         $this->imageOrder = $order;
     }
 
+    protected function messages(): array
+    {
+        return [
+            'newImages.*.uploaded' => __('Image upload failed. Please choose a file smaller than 4 MB and try again.'),
+            'newImages.*.image' => __('Each upload must be a valid image file.'),
+            'newImages.*.max' => __(':attribute may not be greater than :max kilobytes.', ['attribute' => __('event image')]),
+        ];
+    }
+
     public function removeImage(int $imageId): void
     {
         if (! $this->event) {

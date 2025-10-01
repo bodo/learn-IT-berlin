@@ -20,7 +20,7 @@
                     @auth
                         <li><a href="{{ route('dashboard') }}" wire:navigate>{{ __('Dashboard') }}</a></li>
                     @endauth
-                    <li><a href="/events" wire:navigate>{{ __('Events') }}</a></li>
+                    <li><a href="{{ route('events.index') }}" wire:navigate>{{ __('Events') }}</a></li>
                     <li><a href="{{ route('groups.index') }}" wire:navigate>{{ __('Groups') }}</a></li>
                     @auth
                         @if(auth()->user()->isAdmin())
@@ -96,7 +96,7 @@
                         @auth
                             <li><a href="{{ route('dashboard') }}" wire:navigate>{{ __('Dashboard') }}</a></li>
                         @endauth
-                        <li><a href="/events" wire:navigate>{{ __('Events') }}</a></li>
+                        <li><a href="{{ route('events.index') }}" wire:navigate>{{ __('Events') }}</a></li>
                         <li><a href="{{ route('groups.index') }}" wire:navigate>{{ __('Groups') }}</a></li>
                         @auth
                             @if(auth()->user()->isAdmin())

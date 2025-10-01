@@ -58,6 +58,7 @@ Route::middleware(['auth'])->group(function () {
 });
 
 Route::get('groups', \App\Livewire\Groups\Directory::class)->name('groups.index');
+Route::get('events', \App\Livewire\Events\Feed::class)->name('events.index');
 Route::get('groups/{group}', \App\Livewire\Groups\Show::class)->name('groups.show');
 Route::get('groups/{group}/events', \App\Livewire\Events\ListByGroup::class)->name('groups.events.index');
 Route::get('events/{event}', \App\Livewire\Events\Show::class)->name('events.show');

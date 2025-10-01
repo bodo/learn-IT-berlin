@@ -60,7 +60,7 @@
                     <h2 class="card-title">{{ __('Browse Events') }}</h2>
                     <p class="text-base-content/70">{{ __('Discover all upcoming events') }}</p>
                     <div class="card-actions justify-end">
-                        <a href="/events" class="btn btn-outline btn-sm">{{ __('Browse Events') }}</a>
+                        <a href="{{ route('events.index') }}" class="btn btn-outline btn-sm">{{ __('Browse Events') }}</a>
                     </div>
                 </div>
             </div>

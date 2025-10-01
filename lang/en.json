@@ -1,0 +1,23 @@
+{
+    "Attendee Management": "Attendee Management",
+    "Monitor confirmed spots, waitlist, and interested members.": "Monitor confirmed spots, waitlist, and interested members.",
+    "Confirmed: :confirmed | Waitlist: :waitlist | Interested: :interested": "Confirmed: :confirmed | Waitlist: :waitlist | Interested: :interested",
+    "Confirmed Attendees": "Confirmed Attendees",
+    "No confirmed attendees yet.": "No confirmed attendees yet.",
+    "RSVP'd :timeAgo": "RSVP'd :timeAgo",
+    "Waitlist": "Waitlist",
+    "No one on the waitlist.": "No one on the waitlist.",
+    "Position :pos": "Position :pos",
+    "Interested Users": "Interested Users",
+    "No interested users yet.": "No interested users yet.",
+    "Marked interested :timeAgo": "Marked interested :timeAgo",
+    "Your RSVPs": "Your RSVPs",
+    "Keep track of the events you plan to attend.": "Keep track of the events you plan to attend.",
+    "Confirmed": "Confirmed",
+    "No confirmed events yet.": "No confirmed events yet.",
+    "Going": "Going",
+    "Waitlisted": "Waitlisted",
+    "You are not on any waitlists.": "You are not on any waitlists.",
+    "Interested": "Interested",
+    "Mark events as interested to track them here.": "Mark events as interested to track them here."
+}

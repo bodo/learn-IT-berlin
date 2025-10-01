@@ -54,4 +54,8 @@
     </div>
 
     <livewire:events.rsvp-panel :event="$event" />
+
+    @if ($canManage)
+        <livewire:events.waitlist-admin :event="$event" :key="'waitlist-admin-'.$event->id" />
+    @endif
 </div>

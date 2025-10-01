@@ -77,3 +77,56 @@ it('interested does not affect reserved spots', function () {
     $event->refresh();
     expect($event->reserved_spots)->toBe(0);
 });
+
+it('promotes waitlisted users when capacity increases', function () {
+    $event = Event::factory()->create([
+        'max_spots' => 1,
+        'reserved_spots' => 0,
+        'status' => EventStatus::Published,
+    ]);
+
+    $alice = User::factory()->create();
+    $bob = User::factory()->create();
+
+    $service = app(RsvpService::class);
+    $service->setStatus($event, $alice, RsvpStatus::Going);
+    $service->setStatus($event, $bob, RsvpStatus::Going);
+
+    $bobRsvp = $event->rsvps()->where('user_id', $bob->id)->firstOrFail();
+    expect($bobRsvp->waitlist_position)->toBe(1);
+
+    $event->update(['max_spots' => 2]);
+    $event->refresh();
+    $event->recalcRsvps();
+    $event->refresh();
+
+    $bobRsvp->refresh();
+    expect($event->reserved_spots)->toBe(2);
+    expect($bobRsvp->waitlist_position)->toBeNull();
+});
+
+it('switching from going to interested frees spot and promotes waitlist', function () {
+    $event = Event::factory()->create([
+        'max_spots' => 1,
+        'reserved_spots' => 0,
+        'status' => EventStatus::Published,
+    ]);
+
+    $alice = User::factory()->create();
+    $bob = User::factory()->create();
+
+    $service = app(RsvpService::class);
+    $service->setStatus($event, $alice, RsvpStatus::Going);
+    $service->setStatus($event, $bob, RsvpStatus::Going);
+
+    $service->setStatus($event, $alice, RsvpStatus::Interested);
+    $event->refresh();
+
+    $aliceRsvp = $event->rsvps()->where('user_id', $alice->id)->firstOrFail();
+    $bobRsvp = $event->rsvps()->where('user_id', $bob->id)->firstOrFail();
+
+    expect($aliceRsvp->status)->toBe(RsvpStatus::Interested);
+    expect($aliceRsvp->waitlist_position)->toBeNull();
+    expect($bobRsvp->waitlist_position)->toBeNull();
+    expect($event->reserved_spots)->toBe(1);
+});

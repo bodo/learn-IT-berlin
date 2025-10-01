@@ -1,0 +1,23 @@
+{
+    "Attendee Management": "Teilnehmerverwaltung",
+    "Monitor confirmed spots, waitlist, and interested members.": "Überwache bestätigte Plätze, Warteliste und interessierte Mitglieder.",
+    "Confirmed: :confirmed | Waitlist: :waitlist | Interested: :interested": "Bestätigt: :confirmed | Warteliste: :waitlist | Interessiert: :interested",
+    "Confirmed Attendees": "Bestätigte Teilnehmende",
+    "No confirmed attendees yet.": "Noch keine bestätigten Teilnehmenden.",
+    "RSVP'd :timeAgo": "Zugesagt vor :timeAgo",
+    "Waitlist": "Warteliste",
+    "No one on the waitlist.": "Niemand steht auf der Warteliste.",
+    "Position :pos": "Position :pos",
+    "Interested Users": "Interessierte Nutzende",
+    "No interested users yet.": "Noch keine interessierten Nutzenden.",
+    "Marked interested :timeAgo": "Als interessiert markiert vor :timeAgo",
+    "Your RSVPs": "Deine Zusagen",
+    "Keep track of the events you plan to attend.": "Behalte die Veranstaltungen im Blick, an denen du teilnehmen möchtest.",
+    "Confirmed": "Bestätigt",
+    "No confirmed events yet.": "Noch keine bestätigten Veranstaltungen.",
+    "Going": "Ich komme",
+    "Waitlisted": "Auf der Warteliste",
+    "You are not on any waitlists.": "Du stehst auf keiner Warteliste.",
+    "Interested": "Interessiert",
+    "Mark events as interested to track them here.": "Markiere Veranstaltungen als interessiert, um sie hier zu sehen."
+}

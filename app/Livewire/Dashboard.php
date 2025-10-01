@@ -2,8 +2,10 @@
 
 namespace App\Livewire;
 
-use App\Models\Event;
+use App\Enums\EventStatus;
 use App\Enums\RsvpStatus;
+use App\Models\Event;
+use App\Models\EventRsvp;
 use Illuminate\Support\Facades\Schema;
 use Livewire\Component;
 
@@ -22,18 +24,34 @@ class Dashboard extends Component
                 ->get()
             : collect();
 
-        $rsvpEvents = collect();
+        $confirmedRsvps = collect();
+        $waitlistRsvps = collect();
+        $interestedRsvps = collect();
         if ($user && Schema::hasTable('event_rsvps') && Schema::hasTable('events')) {
-            $rsvpEvents = Event::query()
-                ->select('events.*')
-                ->join('event_rsvps', 'event_rsvps.event_id', '=', 'events.id')
+            $baseRsvp = EventRsvp::query()
+                ->select('event_rsvps.*')
+                ->join('events', 'events.id', '=', 'event_rsvps.event_id')
                 ->where('event_rsvps.user_id', $user->id)
+                ->where('events.status', EventStatus::Published->value)
+                ->where('events.event_datetime', '>=', now())
+                ->with(['event.group'])
+                ->orderBy('events.event_datetime');
+
+            $confirmedRsvps = (clone $baseRsvp)
                 ->where('event_rsvps.status', RsvpStatus::Going->value)
                 ->whereNull('event_rsvps.waitlist_position')
-                ->published()
-                ->upcoming()
-                ->orderBy('events.event_datetime')
-                ->with('group')
+                ->take(6)
+                ->get();
+
+            $waitlistRsvps = (clone $baseRsvp)
+                ->where('event_rsvps.status', RsvpStatus::Going->value)
+                ->whereNotNull('event_rsvps.waitlist_position')
+                ->orderBy('event_rsvps.waitlist_position')
+                ->take(6)
+                ->get();
+
+            $interestedRsvps = (clone $baseRsvp)
+                ->where('event_rsvps.status', RsvpStatus::Interested->value)
                 ->take(6)
                 ->get();
         }
@@ -41,7 +59,9 @@ class Dashboard extends Component
 
         return view('livewire.dashboard', [
             'upcomingEvents' => $upcomingEvents,
-            'rsvpEvents' => $rsvpEvents,
+            'confirmedRsvps' => $confirmedRsvps,
+            'waitlistRsvps' => $waitlistRsvps,
+            'interestedRsvps' => $interestedRsvps,
             'recentActivity' => $recentActivity,
             'user' => $user,
         ])->layout('components.layouts.public');

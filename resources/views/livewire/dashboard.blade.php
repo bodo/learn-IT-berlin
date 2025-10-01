@@ -146,23 +146,115 @@
     @auth
         {{-- RSVPs Section --}}
         <div class="card bg-base-100 shadow-xl">
-            <div class="card-body">
-                <h2 class="card-title">{{ __('Your RSVPs') }}</h2>
-                <p class="text-base-content/70">{{ __('Keep track of the events you plan to attend.') }}</p>
+            <div class="card-body space-y-6">
+                <div>
+                    <h2 class="card-title">{{ __('Your RSVPs') }}</h2>
+                    <p class="text-base-content/70">{{ __('Keep track of the events you plan to attend.') }}</p>
+                </div>
 
-                @if ($rsvpEvents->count() > 0)
-                    <div class="space-y-4">
-                        @foreach ($rsvpEvents as $event)
-                            <div class="p-4 border border-base-200 rounded-lg">
-                                <div class="flex items-center justify-between">
-                                    <div>
-                                        <h3 class="font-semibold">{{ $event->title }}</h3>
-                                        <p class="text-sm text-base-content/70">{{ $event->date }}</p>
+                @php($hasRsvpData = $confirmedRsvps->isNotEmpty() || $waitlistRsvps->isNotEmpty() || $interestedRsvps->isNotEmpty())
+
+                @if ($hasRsvpData)
+                    <div class="grid gap-6 lg:grid-cols-3">
+                        <div class="space-y-3">
+                            <h3 class="font-semibold text-base-content">{{ __('Confirmed') }}</h3>
+                            @forelse ($confirmedRsvps as $rsvp)
+                                @continue(! $rsvp->event)
+                                <article class="space-y-3 rounded-lg border border-base-200 bg-base-200/40 p-4">
+                                    <div class="flex items-start justify-between gap-3">
+                                        <div>
+                                            <a href="{{ route('events.show', $rsvp->event) }}" class="font-semibold hover:underline">{{ $rsvp->event->title }}</a>
+                                            <p class="text-xs text-base-content/60">{{ $rsvp->event->group->title ?? '' }}</p>
+                                        </div>
+                                        <span class="badge badge-success badge-outline">{{ __('Going') }}</span>
                                     </div>
-                                    <span class="badge badge-outline">{{ $event->status ?? __('Going') }}</span>
+                                    <div class="space-y-2 text-xs text-base-content/70">
+                                        <div class="flex items-center gap-2">
+                                            <x-lucide-clock class="h-4 w-4" />
+                                            <span>{{ optional($rsvp->event->local_event_date)->format('M j, Y g:i A') }} @if($rsvp->event->timezone) ({{ $rsvp->event->timezone }}) @endif</span>
+                                        </div>
+                                        <div class="flex items-center gap-2">
+                                            <x-lucide-map-pin class="h-4 w-4" />
+                                            <span>{{ $rsvp->event->place }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="text-xs text-base-content/60">
+                                        {{ __('RSVP\'d :timeAgo', ['timeAgo' => optional($rsvp->created_at)->diffForHumans()]) }}
+                                    </div>
+                                </article>
+                            @empty
+                                <div class="rounded-lg border border-dashed border-base-300 p-4 text-xs text-base-content/70">
+                                    {{ __('No confirmed events yet.') }}
                                 </div>
-                            </div>
-                        @endforeach
+                            @endforelse
+                        </div>
+
+                        <div class="space-y-3">
+                            <h3 class="font-semibold text-base-content">{{ __('Waitlist') }}</h3>
+                            @forelse ($waitlistRsvps as $rsvp)
+                                @continue(! $rsvp->event)
+                                <article class="space-y-3 rounded-lg border border-warning/40 bg-warning/10 p-4">
+                                    <div class="flex items-start justify-between gap-3">
+                                        <div>
+                                            <a href="{{ route('events.show', $rsvp->event) }}" class="font-semibold hover:underline">{{ $rsvp->event->title }}</a>
+                                            <p class="text-xs text-base-content/60">{{ $rsvp->event->group->title ?? '' }}</p>
+                                        </div>
+                                        <span class="badge badge-warning badge-outline">{{ __('Waitlisted') }}</span>
+                                    </div>
+                                    <div class="space-y-2 text-xs text-base-content/70">
+                                        <div class="flex items-center gap-2">
+                                            <x-lucide-clock class="h-4 w-4" />
+                                            <span>{{ optional($rsvp->event->local_event_date)->format('M j, Y g:i A') }} @if($rsvp->event->timezone) ({{ $rsvp->event->timezone }}) @endif</span>
+                                        </div>
+                                        <div class="flex items-center gap-2">
+                                            <x-lucide-map-pin class="h-4 w-4" />
+                                            <span>{{ $rsvp->event->place }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center justify-between text-xs text-base-content/60">
+                                        <span>{{ __('RSVP\'d :timeAgo', ['timeAgo' => optional($rsvp->created_at)->diffForHumans()]) }}</span>
+                                        <span class="badge badge-sm badge-warning badge-outline">{{ __('Position :pos', ['pos' => $rsvp->waitlist_position]) }}</span>
+                                    </div>
+                                </article>
+                            @empty
+                                <div class="rounded-lg border border-dashed border-base-300 p-4 text-xs text-base-content/70">
+                                    {{ __('You are not on any waitlists.') }}
+                                </div>
+                            @endforelse
+                        </div>
+
+                        <div class="space-y-3">
+                            <h3 class="font-semibold text-base-content">{{ __('Interested') }}</h3>
+                            @forelse ($interestedRsvps as $rsvp)
+                                @continue(! $rsvp->event)
+                                <article class="space-y-3 rounded-lg border border-info/40 bg-info/10 p-4">
+                                    <div class="flex items-start justify-between gap-3">
+                                        <div>
+                                            <a href="{{ route('events.show', $rsvp->event) }}" class="font-semibold hover:underline">{{ $rsvp->event->title }}</a>
+                                            <p class="text-xs text-base-content/60">{{ $rsvp->event->group->title ?? '' }}</p>
+                                        </div>
+                                        <span class="badge badge-info badge-outline">{{ __('Interested') }}</span>
+                                    </div>
+                                    <div class="space-y-2 text-xs text-base-content/70">
+                                        <div class="flex items-center gap-2">
+                                            <x-lucide-clock class="h-4 w-4" />
+                                            <span>{{ optional($rsvp->event->local_event_date)->format('M j, Y g:i A') }} @if($rsvp->event->timezone) ({{ $rsvp->event->timezone }}) @endif</span>
+                                        </div>
+                                        <div class="flex items-center gap-2">
+                                            <x-lucide-map-pin class="h-4 w-4" />
+                                            <span>{{ $rsvp->event->place }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="text-xs text-base-content/60">
+                                        {{ __('Marked interested :timeAgo', ['timeAgo' => optional($rsvp->created_at)->diffForHumans()]) }}
+                                    </div>
+                                </article>
+                            @empty
+                                <div class="rounded-lg border border-dashed border-base-300 p-4 text-xs text-base-content/70">
+                                    {{ __('Mark events as interested to track them here.') }}
+                                </div>
+                            @endforelse
+                        </div>
                     </div>
                 @else
                     <div class="text-center py-10 text-sm text-base-content/70">

@@ -69,6 +69,11 @@ class User extends Authenticatable
         return $this->hasMany(\App\Models\EventRsvp::class);
     }
 
+    public function comments(): HasMany
+    {
+        return $this->hasMany(Comment::class);
+    }
+
     public function groups(): BelongsToMany
     {
         return $this->belongsToMany(Group::class)
@@ -160,7 +165,10 @@ class User extends Authenticatable
 
     public function canModerateComments(): bool
     {
-        return $this->isTrustedUser();
+        return $this->isSuperuser()
+            || $this->isAdmin()
+            || $this->moderatedGroups()->exists()
+            || $this->ownedGroups()->exists();
     }
 
     public function canManageUsers(): bool

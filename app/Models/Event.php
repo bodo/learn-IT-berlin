@@ -67,6 +67,16 @@ class Event extends Model
         return $this->hasMany(EventRsvp::class);
     }
 
+    public function comments(): HasMany
+    {
+        return $this->hasMany(Comment::class);
+    }
+
+    public function approvedComments(): HasMany
+    {
+        return $this->comments()->approved()->orderBy('created_at');
+    }
+
     public function confirmedAttendees(): HasMany
     {
         return $this->rsvps()->where('status', \App\Enums\RsvpStatus::Going->value)->whereNull('waitlist_position');

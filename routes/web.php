@@ -31,6 +31,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('admin/users', \App\Livewire\Admin\UserRoleManager::class)
         ->middleware('role:superuser')
         ->name('admin.users');
+
+    Route::get('moderate/comments', \App\Livewire\Moderation\CommentsQueue::class)
+        ->middleware('can:moderate-comments')
+        ->name('moderate.comments');
 });
 
 Route::middleware(['auth', 'role:admin'])->group(function () {

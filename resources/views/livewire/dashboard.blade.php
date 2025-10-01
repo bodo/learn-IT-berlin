@@ -31,13 +31,13 @@
                 </div>
             @endif
 
-            @if($user->isTrustedUser())
+            @if($user->canModerateComments())
                 <div class="card bg-base-100 shadow-xl">
                     <div class="card-body">
                         <h2 class="card-title">{{ __('Moderate Comments') }}</h2>
                         <p class="text-base-content/70">{{ __('Review and approve user comments') }}</p>
                         <div class="card-actions justify-end">
-                            <a href="/moderate/comments" class="btn btn-outline btn-sm">{{ __('Moderate') }}</a>
+                            <a href="{{ route('moderate.comments') }}" class="btn btn-outline btn-sm">{{ __('Moderate') }}</a>
                         </div>
                     </div>
                 </div>

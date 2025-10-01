@@ -42,8 +42,8 @@
                                 </details>
                             </li>
                         @endif
-                        @if(auth()->user()->isTrustedUser())
-                            <li><a href="/moderate/comments" wire:navigate>{{ __('Moderate') }}</a></li>
+                        @if(auth()->user()->canModerateComments())
+                            <li><a href="{{ route('moderate.comments') }}" wire:navigate>{{ __('Moderate') }}</a></li>
                         @endif
                     @endauth
                 </ul>
@@ -51,6 +51,7 @@
 
             <div class="navbar-end">
                 @auth
+                    <livewire:notifications.bell />
                     <div class="dropdown dropdown-end">
                         <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
                             <div class="avatar placeholder">
@@ -104,8 +105,8 @@
                                     <li><a href="/admin/users" wire:navigate>{{ __('Manage Users') }}</a></li>
                                 @endif
                             @endif
-                            @if(auth()->user()->isTrustedUser())
-                                <li><a href="/moderate/comments" wire:navigate>{{ __('Moderate') }}</a></li>
+                            @if(auth()->user()->canModerateComments())
+                                <li><a href="{{ route('moderate.comments') }}" wire:navigate>{{ __('Moderate') }}</a></li>
                             @endif
                         @endauth
                     </ul>

@@ -55,6 +55,8 @@
 
     <livewire:events.rsvp-panel :event="$event" />
 
+    <livewire:events.comments :event="$event" :key="'comments-'.$event->id" />
+
     @if ($canManage)
         <livewire:events.waitlist-admin :event="$event" :key="'waitlist-admin-'.$event->id" />
     @endif

@@ -15,11 +15,51 @@
 
 <script>
     (() => {
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        const storedTheme = localStorage.getItem('learnit-theme');
-        const theme = storedTheme ?? (prefersDark ? 'dark' : 'light');
-        document.documentElement.dataset.theme = theme;
-        document.documentElement.classList.toggle('dark', theme === 'dark');
+        const KEY = 'learnit-theme';
+        const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+
+        const preferredTheme = () => (mediaQuery.matches ? 'dark' : 'light');
+
+        const applyTheme = (value) => {
+            document.documentElement.dataset.theme = value;
+            document.documentElement.classList.toggle('dark', value === 'dark');
+        };
+
+        const storedTheme = () => localStorage.getItem(KEY);
+
+        const syncTheme = () => {
+            const stored = storedTheme();
+            if (stored === 'light' || stored === 'dark') {
+                applyTheme(stored);
+            } else {
+                applyTheme(preferredTheme());
+            }
+        };
+
+        window.learnItTheme = {
+            current() {
+                return storedTheme() ?? 'system';
+            },
+            set(value) {
+                if (value === 'system') {
+                    localStorage.removeItem(KEY);
+                    applyTheme(preferredTheme());
+                    return;
+                }
+
+                localStorage.setItem(KEY, value);
+                applyTheme(value);
+            },
+            apply: applyTheme,
+        };
+
+        syncTheme();
+
+        mediaQuery.addEventListener('change', (event) => {
+            if (!storedTheme()) {
+                applyTheme(event.matches ? 'dark' : 'light');
+            }
+        });
     })();
 </script>
 

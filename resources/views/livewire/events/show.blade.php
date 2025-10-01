@@ -1,4 +1,10 @@
 <div class="space-y-8">
+    <x-ui.breadcrumbs :items="[
+        ['label' => __('Events'), 'url' => route('events.index')],
+        ['label' => $event->group->title, 'url' => route('groups.show', $event->group)],
+        ['label' => $event->title],
+    ]" />
+
     <div class="card bg-base-100 shadow">
         <div class="card-body space-y-6">
             <div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">

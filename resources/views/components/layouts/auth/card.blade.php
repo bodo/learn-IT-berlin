@@ -4,6 +4,9 @@
         @include('partials.head')
     </head>
     <body class="min-h-screen bg-base-200 antialiased">
+        @if (session()->has('success'))
+            <x-ui.toast type="success" :message="session('success')" />
+        @endif
         <div class="min-h-screen flex items-center justify-center px-4 py-8">
             <div class="w-full max-w-lg space-y-8">
                 <a href="{{ route('home') }}" class="flex flex-col items-center gap-2" wire:navigate>

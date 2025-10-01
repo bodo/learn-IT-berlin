@@ -115,6 +115,10 @@
         </div>
 
 
+        @if (session()->has('success'))
+            <x-ui.toast type="success" :message="session('success')" />
+        @endif
+
         <!-- Main Content -->
         <main id="main-content" class="container mx-auto px-4 py-8" role="main">
             {{ $slot }}

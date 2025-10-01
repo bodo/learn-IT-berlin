@@ -4,6 +4,9 @@
         @include('partials.head')
     </head>
     <body class="min-h-screen bg-base-200 antialiased">
+        @if (session()->has('success'))
+            <x-ui.toast type="success" :message="session('success')" />
+        @endif
         <div class="grid min-h-screen lg:grid-cols-2">
             <div class="relative hidden bg-gradient-to-br from-primary to-secondary text-primary-content lg:flex">
                 <div class="absolute inset-0 opacity-80"></div>

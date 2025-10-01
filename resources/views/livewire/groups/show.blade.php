@@ -1,4 +1,9 @@
 <div class="space-y-8">
+    <x-ui.breadcrumbs :items="[
+        ['label' => __('Groups'), 'url' => route('groups.index')],
+        ['label' => $group->title],
+    ]" />
+
     <div class="card bg-base-100 shadow">
         <figure class="h-48 w-full overflow-hidden bg-base-200">
             @if ($group->bannerUrl())

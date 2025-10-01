@@ -39,25 +39,39 @@ new class extends Component {
 @push('scripts')
     <script>
         function appearanceSettings() {
-            const stored = localStorage.getItem('learnit-theme');
-            const initial = stored ?? 'system';
+            const KEY = 'learnit-theme';
+            const manager = window.learnItTheme;
+            const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+
+            const currentTheme = () => {
+                if (manager) {
+                    return manager.current();
+                }
+
+                return localStorage.getItem(KEY) ?? 'system';
+            };
 
             const applyTheme = (value) => {
+                if (manager) {
+                    manager.set(value);
+                    return;
+                }
+
                 if (value === 'system') {
-                    localStorage.removeItem('learnit-theme');
-                    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                    localStorage.removeItem(KEY);
+                    const prefersDark = mediaQuery.matches;
                     document.documentElement.dataset.theme = prefersDark ? 'dark' : 'light';
                     document.documentElement.classList.toggle('dark', prefersDark);
                     return;
                 }
 
-                localStorage.setItem('learnit-theme', value);
+                localStorage.setItem(KEY, value);
                 document.documentElement.dataset.theme = value;
                 document.documentElement.classList.toggle('dark', value === 'dark');
             };
 
             return {
-                theme: initial,
+                theme: currentTheme(),
                 buttonClasses(value) {
                     return this.theme === value ? 'btn-primary text-primary-content' : 'btn-ghost';
                 },

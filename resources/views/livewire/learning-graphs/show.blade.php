@@ -37,13 +37,9 @@
                             {{ __('Tip: Drag nodes to inspect relationships. Scroll to zoom, double click to reset view.') }}
                         </p>
                     </div>
-                    <div class="rounded-xl border border-base-300 bg-base-100 p-4 space-y-4">
-                        <div class="flex items-center justify-between">
-                            <h2 class="text-lg font-semibold">{{ __('Node details') }}</h2>
-                            <span class="badge badge-ghost">{{ __('Markdown supported') }}</span>
-                        </div>
-                        <div id="learning-graph-details" class="space-y-4 text-sm leading-relaxed">
-                            <p class="text-base-content/60">{{ __('Select a node to view its blocks.') }}</p>
+                    <div class="rounded-xl border border-base-300 bg-base-100/95 p-4">
+                        <div id="learning-graph-details" class="space-y-6">
+                            <p class="text-sm text-base-content/60">{{ __('Select a node to view details.') }}</p>
                         </div>
                     </div>
                 </div>
@@ -63,7 +59,7 @@
                 const nodeDetails = @json($nodeDetails);
                 const canvasId = 'learning-graph-canvas';
                 const detailsId = 'learning-graph-details';
-                const emptyMessage = `{{ __('Select a node to view its blocks.') }}`;
+                const emptyMessage = `{{ __('Select a node to view details.') }}`;
 
                 function renderDetails(nodeId) {
                     const container = document.getElementById(detailsId);
@@ -74,27 +70,31 @@
                     const data = nodeDetails[nodeId];
 
                     if (!data) {
-                        container.innerHTML = `<p class="text-base-content/60">${emptyMessage}</p>`;
+                        container.innerHTML = `<p class="text-sm text-base-content/60">${emptyMessage}</p>`;
                         return;
                     }
 
-                    let html = `<div class="space-y-3">`;
-                    html += `<div>
-                        <p class="text-xs uppercase tracking-wide text-base-content/60">{{ __('Selected node') }}</p>
-                        <h3 class="text-xl font-semibold">${data.title}</h3>
-                        <p class="text-xs text-base-content/60">{{ __('Level') }} ${data.level} · {{ __('Order') }} ${data.order}</p>
-                    </div>`;
+                    const safeTitleWrapper = document.createElement('div');
+                    safeTitleWrapper.innerText = data.title ?? '';
+                    const safeTitle = safeTitleWrapper.innerHTML || `{{ __('Untitled node') }}`;
+
+                    let html = `<div class="space-y-4">`;
+                    html += `<h2 class="text-xl font-semibold text-base-content">${safeTitle}</h2>`;
 
                     if (!data.blocks.length) {
-                        html += `<p class="text-base-content/60">{{ __('No content blocks yet for this node.') }}</p>`;
+                        html += `<p class="text-sm text-base-content/60">{{ __('No content blocks yet for this node.') }}</p>`;
                     } else {
                         data.blocks.forEach((block) => {
                             if (block.type === 'text') {
-                                html += `<div class="p-3 rounded-lg border border-base-200 bg-base-100">${block.html}</div>`;
+                                html += `<article class="rounded-xl border border-base-300 bg-base-100/90 p-4 shadow-sm">
+                                    <div class="learning-graph-rich-text">
+                                        ${block.html}
+                                    </div>
+                                </article>`;
                             } else if (block.type === 'image') {
-                                html += `<div class="p-3 rounded-lg border border-base-200 bg-base-100">
-                                    <img src="${block.url}" alt="" class="rounded-lg max-h-64 object-contain" />
-                                </div>`;
+                                html += `<figure class="overflow-hidden rounded-xl border border-base-300 bg-base-100/80">
+                                    <img src="${block.url}" alt="" class="w-full object-cover" loading="lazy" />
+                                </figure>`;
                             }
                         });
                     }

@@ -60,7 +60,7 @@ Laravel 12 + Livewire application for organising CS study events in Berlin. Feat
 
 - **Learning Graphs** (`11-learning-graph.md`)
   - Group owners/admins compose roadmap graphs with ordered nodes, markdown text blocks, image blocks, and directed edges via Livewire admin screens.
-  - Graphs support draft/published states; published graphs render with vis-network and markdown tooltips at `groups/{group}/learning-graphs/{graph}`.
+  - Graphs support draft/published states; published graphs render with vis-network at `groups/{group}/learning-graphs/{graph}`.
   - Image assets live on the public disk and are cleaned up when blocks or graphs are removed.
 
 - **Localization** (`09-i18n-localization.md`)

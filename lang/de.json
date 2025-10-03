@@ -146,8 +146,7 @@
     "This learning graph has no nodes yet.": "Dieser Lernpfad enthält noch keine Knoten.",
     "Tip: Drag nodes to inspect relationships. Scroll to zoom, double click to reset view.": "Tipp: Ziehe Knoten, um Beziehungen zu prüfen. Scrolle zum Zoomen, doppelklicke, um die Ansicht zurückzusetzen.",
     "Node details": "Knotendetails",
-    "Markdown supported": "Markdown wird unterstützt",
-    "Select a node to view its blocks.": "Wähle einen Knoten, um seine Blöcke zu sehen.",
+    "Select a node to view details.": "Wähle einen Knoten, um Details zu sehen.",
     "Selected node": "Ausgewählter Knoten",
     "Level": "Ebene",
     "Order": "Reihenfolge",
@@ -161,5 +160,6 @@
     "View": "Ansehen",
     "Are you sure you want to delete this learning graph?": "Möchtest du diesen Lernpfad wirklich löschen?",
     "Updated :time": "Aktualisiert :time",
-    "learning-graphs.node_count": "{0}Noch keine Knoten|{1}:count Knoten|[2,*]:count Knoten"
+    "learning-graphs.node_count": "{0}Noch keine Knoten|{1}:count Knoten|[2,*]:count Knoten",
+    "Tip: Drag nodes to explore the roadmap. Scroll to zoom, click links in nodes for external resources.": "Tipp: Ziehe Knoten, um den Lernpfad zu erkunden. Scrolle zum Zoomen, klicke Links in den Knoten für externe Ressourcen."
 }

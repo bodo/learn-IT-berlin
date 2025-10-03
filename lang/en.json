@@ -146,8 +146,7 @@
     "This learning graph has no nodes yet.": "This learning graph has no nodes yet.",
     "Tip: Drag nodes to inspect relationships. Scroll to zoom, double click to reset view.": "Tip: Drag nodes to inspect relationships. Scroll to zoom, double click to reset view.",
     "Node details": "Node details",
-    "Markdown supported": "Markdown supported",
-    "Select a node to view its blocks.": "Select a node to view its blocks.",
+    "Select a node to view details.": "Select a node to view details.",
     "Selected node": "Selected node",
     "Level": "Level",
     "Order": "Order",
@@ -161,5 +160,7 @@
     "View": "View",
     "Are you sure you want to delete this learning graph?": "Are you sure you want to delete this learning graph?",
     "Updated :time": "Updated :time",
-    "learning-graphs.node_count": "{0}No nodes yet|{1}:count node|[2,*]:count nodes"
+    "learning-graphs.node_count": "{0}No nodes yet|{1}:count node|[2,*]:count nodes",
+    "Untitled node": "Untitled node",
+    "Tip: Drag nodes to explore the roadmap. Scroll to zoom, click links in nodes for external resources.": "Tip: Drag nodes to explore the roadmap. Scroll to zoom, click links in nodes for external resources."
 }

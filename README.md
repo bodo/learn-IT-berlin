@@ -1,4 +1,4 @@
-# Learn IT Berlin (internal)
+# Learn IT Berlin
 
 Laravel 12 + Livewire application for organising CS study events in Berlin. Features are implemented per the docs in `instructions/` and summarised here for quick reference.
 

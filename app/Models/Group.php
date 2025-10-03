@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\GroupRole;
+use App\Models\LearningGraph;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -43,6 +44,11 @@ class Group extends Model
     public function events(): HasMany
     {
         return $this->hasMany(Event::class);
+    }
+
+    public function learningGraphs(): HasMany
+    {
+        return $this->hasMany(LearningGraph::class);
     }
 
     public function allUsers(): BelongsToMany

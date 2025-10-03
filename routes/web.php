@@ -55,11 +55,21 @@ Route::middleware(['auth'])->group(function () {
         ->name('admin.events.edit');
     Route::get('admin/groups/{group}/events/{event}/attendees.csv', \App\Http\Controllers\EventAttendeesExportController::class)
         ->name('admin.events.attendees.export');
+
+    Route::get('admin/groups/{group}/learning-graphs', \App\Livewire\Admin\LearningGraphs\GraphIndex::class)
+        ->name('admin.learning-graphs.index');
+    Route::get('admin/groups/{group}/learning-graphs/create', \App\Livewire\Admin\LearningGraphs\GraphForm::class)
+        ->defaults('graph', null)
+        ->name('admin.learning-graphs.create');
+    Route::get('admin/groups/{group}/learning-graphs/{graph}/edit', \App\Livewire\Admin\LearningGraphs\GraphForm::class)
+        ->name('admin.learning-graphs.edit');
 });
 
 Route::get('groups', \App\Livewire\Groups\Directory::class)->name('groups.index');
 Route::get('events', \App\Livewire\Events\Feed::class)->name('events.index');
 Route::get('groups/{group}', \App\Livewire\Groups\Show::class)->name('groups.show');
+Route::get('groups/{group}/learning-graphs/{graph}', \App\Livewire\LearningGraphs\Show::class)
+    ->name('groups.learning-graphs.show');
 Route::get('groups/{group}/events', \App\Livewire\Events\ListByGroup::class)->name('groups.events.index');
 Route::get('events/{event}', \App\Livewire\Events\Show::class)->name('events.show');
 

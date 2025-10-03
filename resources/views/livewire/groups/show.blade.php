@@ -38,6 +38,9 @@
                         </button>
 
                         @if ($group->canManage(auth()->user()))
+                            <a href="{{ route('admin.learning-graphs.index', $group) }}" class="btn btn-outline">
+                                {{ __('Manage learning graphs') }}
+                            </a>
                             <a href="{{ route('admin.events.index', $group) }}" class="btn btn-outline">
                                 {{ __('Manage events') }}
                             </a>
@@ -90,6 +93,8 @@
             </div>
         </div>
     </div>
+
+    <livewire:learning-graphs.list-by-group :group="$group" />
 
     <livewire:events.list-by-group :group="$group" />
 </div>
